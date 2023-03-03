@@ -1,0 +1,13 @@
+#include "initialize.h"
+#include "elevio.h"
+
+
+int initialize(){
+    int floor = elevio_floorSensor();
+    while (floor != 0)
+    {
+        elevio_motorDirection(DIRN_DOWN);
+    }
+    elevio_motorDirection(DIRN_STOP);
+    return floor;
+}

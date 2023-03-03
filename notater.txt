@@ -1,0 +1,152 @@
+--QUEUE--
+
+    vector<vector<int>> Buttons_pressed {
+        {0, 0, 0},    //1.egt {UP, DOWN, CAB}
+        {0, 0, 0},    //2.egt {UP, DOWN, CAB}
+        {0, 0, 0},    //3.egt {UP, DOWN, CAB}
+        {0, 0, 0},    //4.egt {UP, DOWN, CAB}
+    }
+
+    int next_floor(vector<vector<int>> queue, int current_floor) {
+        return next_floor;
+    }
+
+    MotorDirection Next_direction(int next_floor, int current_floor) {
+        return next_direction;
+    }
+
+    int check_orders(vector<vector<int>> queue, int TAKE_ORDERS) {
+        return true/false;
+    }
+
+    int arrived(&next_floor) {
+        return true/false;
+    }
+
+
+--LIGHTS--
+    1. skru på lys når du er i en etasje
+    2. skru av lys når du ankommer ny etasje
+    3. skru på lys når knapp trykkes
+    4. skru av lys man bestilling er ekspedert
+    5. lys stop når knapp er trykket/slutt når knapp trykkes på nytt
+
+    void set_lights() {}, //denne må deles opp i flere funksjoner
+
+
+--DOOR--
+    1. skru 
+
+
+--MOVEMENT--
+    Next_direction()
+    int Next_stop(queue, current_floor) {
+        return next floor
+    }
+    
+
+
+
+--STOP--
+     void check_stop(){
+        if (stop_btn){
+            flush_queue();
+            MotorDirection = stop;
+        }
+     }
+
+
+--STANDBY--
+
+
+--INITIALIZE--
+    1. gå til forhåndsdefinert etasje og ignorer ordre.
+
+
+
+void run() {
+    int TAKE_ORDERS = 0;
+
+    initialize(); //plasser heis i en etasje og la den ta imot ordre når dette er gjort , sett mov til stop(global variabel)
+
+    int CURRENT_FLOOR;
+
+    
+    while(1){
+
+        if(check_orders()) {
+
+            MotorDirection = Next_direction(CURRENT_FLOOR, next_floor);
+            while(!arrived()){
+                CURRENT_FLOOR = elevio_floorSensor();
+                set_lights();
+                check_stop();
+            }
+            open()
+        }
+    }
+}
+
+
+
+    ---ABSTRAHERT---
+
+void run(){
+    
+    CURRENT_FLOOR = Initialize();
+
+    while(1){
+        check_stop();               //Vi må til en hver tid sjekke stop
+        Stanby();
+        while(check_orders()){      //check_orders sjekker om det er ordre og om man skal ta imot ordre, OG SKRUR PÅ LYS
+            Move();                 //beveg deg til ordre
+            openDoors();            //man skal alltid åpne døren når man er ferdig med en ordre
+        }
+    }
+}
+
+
+
+Standby() {
+    MotorDirection = DIRN_STOP;
+}
+
+
+
+Check_stop() {
+    if(stop_is_pushed()) {
+        clear_queue();
+        MotorDirection = DIRN_STOP;
+        stop = 1;
+        while(stop){
+            stop = stop_is_pushed();
+        }
+    }
+}
+
+
+
+
+Move() {
+    next_floor = calculate_next_floor();                                //beregn hva neste etg er
+    MotorDirection = calculate_direction(next_floor, current_floor);    //beregn retningen på Motoren 
+    while(CURRENT_FLOOR != next_floor){                                 
+        Check_stop();                                                   //sjekk stoppknapp
+        CURRENT_FLOOR = check_floor();                                  //sjekk hvor du er
+        set_lights(current_floor);                                      //Juster lys etter hvor du er (beregn hvor du var?)
+    }
+    Remove_current_floor_from_queue();                                  //viser at man er ekspedert
+    Turn_of_panel_light();
+}
+
+
+openDoors() {
+    open_time = 0;
+    while(open_time != 3){
+        if(elevio_obstruction()){
+            open_time = 0;
+        }
+        open_time += time; 
+    }
+}
+
