@@ -12,4 +12,11 @@ int order_exist() {
 }
 
 
-
+void Set_buttons_pressed(int (*arr)[N_FLOORS][N_BUTTONS]) {
+    for(int i = 0; i<N_FLOORS; i++){
+        for(int y = 0; y<N_BUTTONS; y++)
+        if (elevio_callButton(i, y)) {
+            *arr[i][y] = 1;
+        }
+    }
+}

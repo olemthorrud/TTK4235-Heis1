@@ -17,7 +17,8 @@ void run() {
 
         //check_stop();               //Vi må til en hver tid sjekke stop, cleare queue
         Stanby();
-        while(order_exist()){         //check_orders sjekker om det er ordre og om man skal ta imot ordre, OG SKRUR PÅ LYS
+        while(order_exist()){         //check_orders sjekker om det er ordre og om man skal ta imot ordre
+            Set_buttons_pressed(&buttons_pressed);
             Move();                   //beveg deg til en-ordre (beregn hvor neste ordre skal, og om man kan stoppe på veien)
             //openDoors();            //man skal alltid åpne døren når man er ferdig med en ordre
         }
