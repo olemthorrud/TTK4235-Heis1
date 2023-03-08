@@ -128,13 +128,16 @@ Check_stop() {
 
 
 Move() {
-    next_floor = calculate_next_floor();                                //beregn hva neste etg er
+    do {
+    
+    CURRENT_FLOOR = check_floor();     
+    next_floor = calculate_next_floor();                               
     MotorDirection = calculate_direction(next_floor, current_floor);    //beregn retningen på Motoren 
-    while(CURRENT_FLOOR != next_floor){                                 
-        Check_stop();                                                   //sjekk stoppknapp
-        CURRENT_FLOOR = check_floor();                                  //sjekk hvor du er
-        set_lights(current_floor);                                      //Juster lys etter hvor du er (beregn hvor du var?)
-    }
+    Check_stop();  
+    Set_buttons_pressed();
+    set_lights(current_floor);                                      //Juster lys etter hvor du er (beregn hvor du var?)
+    } while(CURRENT_FLOOR != next_floor)
+
     Remove_current_floor_from_queue();                                  //viser at man er ekspedert
     Turn_of_panel_light();
 }
