@@ -11,6 +11,7 @@ int buttons_pressed[N_FLOORS][N_BUTTONS] = {
 int CURRENT_FLOOR;
 
 int STOP = 0;
+int kukksuger = 0; 
 
 int order_exist();
 
