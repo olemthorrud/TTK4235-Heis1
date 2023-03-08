@@ -13,6 +13,7 @@ int CURRENT_FLOOR;
 int STOP = 0;
 int kukksuger = 0; 
 int kukksuger2 = 0; 
+int kukksuger3 =0;
 
 int order_exist();
 
