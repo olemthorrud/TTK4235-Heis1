@@ -12,11 +12,29 @@ int order_exist() {
 }
 
 
-void Set_buttons_pressed(int (*arr)[N_FLOORS][N_BUTTONS]) {
+void Set_buttons_pressed() {
     for(int i = 0; i<N_FLOORS; i++){
         for(int y = 0; y<N_BUTTONS; y++)
         if (elevio_callButton(i, y)) {
-            *arr[i][y] = 1;
+            buttons_pressed[i][y] = 1;
         }
     }
 }
+
+
+// int calculate_nxt_floor(){
+//     for(int i = 0; i<N_FLOORS; i++){
+//         for(int y = 0; y<N_BUTTONS; y++)
+//         if (elevio_callButton(i, y)) {
+//             buttons_pressed[i][y] = 1;
+//         }
+//     }
+// }
+
+/* int calculate_nxt_floor(){
+    if(elevio_floorSensor()) {
+
+    }
+
+    else if();
+} */
