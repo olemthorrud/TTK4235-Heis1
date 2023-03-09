@@ -73,6 +73,7 @@
         *var = _v;                                          \
     }
 
+
 #define con_match(id)                                       \
     if(!strcasecmp(_val, #id)){                             \
         _v = id;                                            \

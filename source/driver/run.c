@@ -1,24 +1,34 @@
 #include "run.h"
-#include "standby.h"
 #include "initialize.h"
 #include "elevio.h"
 #include "queue.h"
 
 void run() {
 
-    CURRENT_FLOOR = initialize();
-    int TAKES_ORDERS = 1;
+    int current_floor = initialize();
+    int target_floor;
 
-    while(1){
+while(1) {
+    
+    MoveState state = IDLE;
 
-        //check_stop();               //Vi må til en hver tid sjekke stop, cleare queue
-        Stanby();
-        while(order_exist() && !STOP){         //check_orders sjekker om det er ordre og om man skal ta imot ordre
+    while(order_exist()){
+        
+        do {
             Set_buttons_pressed();
-            Move();                   //beveg deg til en-ordre (beregn hvor neste ordre skal, og om man kan stoppe på veien)
-            //openDoors();            //man skal alltid åpne døren når man er ferdig med en ordre
-        }
+            current_floor = elevio_floorSensor();
+            target_floor = calculate_nxt_floor(current_floor, state);
+            state = calculate_state(current_floor, target_floor, state); //se på edgecase når du kommer ned
+            //move_elevator(current_floor, target_floor);
+        } while(current_floor != target_floor);
+        
+        clear_btn(current_floor);
+        //stopp motor
+        //open doors
     }
+
+}
+
 }
 
 
