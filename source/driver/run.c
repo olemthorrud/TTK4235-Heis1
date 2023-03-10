@@ -41,6 +41,8 @@ while(1) {
         clear_btn(current_floor);
         Keep_doors_open_3_sek();
         //Set_buttons_pressed();
+
+        //Dette er det siste som skjer
     }
 }
 }
