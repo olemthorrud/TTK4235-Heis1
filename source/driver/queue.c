@@ -7,12 +7,13 @@ int buttons_pressed[N_FLOORS][N_BUTTONS] = {
     {0, 0, 0},    
     {0, 0, 0}
     };
-
+    
+int STOP = 0;
 
 int order_exist() {
     for(int i = 0; i<N_FLOORS; i++){
         for(int y = 0; y<N_BUTTONS; y++)
-        if (elevio_callButton(i, y)) {
+        if (buttons_pressed[i][y]){
             return 1;
         }
     }
@@ -82,9 +83,10 @@ int calculate_nxt_floor(MoveState state) {
         }
         i += state;
     }
+    printf("loop_nr_1 is good\n");
 
     //2. se etter ordre i !state-retning fra langst unna til nermest
-    i = max_lim - 1;
+    i = max_lim -= state;
     btn_dir_idx = 0.5 + 0.5 *state;
     while (i != current_floor) {
         if (buttons_pressed[i][btn_dir_idx]){
@@ -93,6 +95,7 @@ int calculate_nxt_floor(MoveState state) {
         i += state*(-1); 
     }
 
+    printf("loop_nr_2 is good\n");
     //3. se etter ordre i !state-retning fra nermest til lengst unna
     i = current_floor;
     max_lim = 1.5 - 2.5 * state; 
@@ -103,15 +106,19 @@ int calculate_nxt_floor(MoveState state) {
         i += state*(-1);
     }
    
+   printf("loop_nr_3 is good \n");
     //4. se etter ordre i state-retning fra
-    i = max_lim - 1; 
+    i = max_lim += state; 
     btn_dir_idx = 0.5 - 0.5 *state;
 
     while (i != current_floor){
         if (buttons_pressed[i][btn_dir_idx]){
             return i;
         }
+        i += state;
     }
+
+    printf("loop_nr_4 is good\n");
 
     return current_floor;
 }
@@ -160,5 +167,16 @@ void clear_btn(int floor) {
     for (int i = 0; i < N_BUTTONS; i++){
         buttons_pressed[floor][i] = 0;
     }
+
+}
+
+void print_buttons(){
+    for (int f = 0; f < N_FLOORS; f++){
+        for (int b = 0; b < N_BUTTONS; b++){
+            printf(" %d", buttons_pressed[f][b]);
+            }
+            printf("\n");
+        }
+                    printf("\n");
 
 }
