@@ -7,7 +7,7 @@ int buttons_pressed[N_FLOORS][N_BUTTONS] = {
     {0, 0, 0},    
     {0, 0, 0}
     };
-    
+
 int STOP = 0;
 
 int order_exist() {
@@ -33,36 +33,19 @@ void Set_buttons_pressed() {
 
 
 
+
 int check_for_stops(int current_floor, int current_next, MoveState motor_dir) {
+    if (current_floor == 0 || current_floor == 1 || current_floor == 2 || current_floor == 3){
 
-    switch (motor_dir)
-    {
+   int btn = 0.5 -0.5*motor_dir;
 
-    //skal vi ned(-1); iterer ovenifra og ned, sjekk index 1, 2 i matrise 
-    case MOVE_DOWN:
-    for(int i = current_floor; i >= 0; i--) {
-        if(buttons_pressed[i][BUTTON_HALL_DOWN] || buttons_pressed[i][BUTTON_CAB]){
-            return i;
-            }
-        }   
-        return current_next;
-    
-    //skal vi opp(1); iterer nedenifra og opp, sjekk index 0, 2 i matrise
-    case MOVE_UP:
-    for(int i = current_floor; i < N_FLOORS; i++){
-        if(buttons_pressed[i][BUTTON_HALL_UP] || buttons_pressed[i][BUTTON_CAB]){
-            return i;
-            }
-        }
-        return current_next;
-
-
-    default:
-    return current_next;
-
+    if(buttons_pressed[current_floor][btn] || buttons_pressed[current_floor][BUTTON_CAB]){
+        return current_floor;
     }
-}
+    }
 
+    return current_next;
+}
 
 int calculate_nxt_floor(MoveState state) {
 
@@ -83,7 +66,6 @@ int calculate_nxt_floor(MoveState state) {
         }
         i += state;
     }
-    printf("loop_nr_1 is good\n");
 
     //2. se etter ordre i !state-retning fra langst unna til nermest
     i = max_lim -= state;
@@ -95,7 +77,6 @@ int calculate_nxt_floor(MoveState state) {
         i += state*(-1); 
     }
 
-    printf("loop_nr_2 is good\n");
     //3. se etter ordre i !state-retning fra nermest til lengst unna
     i = current_floor;
     max_lim = 1.5 - 2.5 * state; 
@@ -106,7 +87,6 @@ int calculate_nxt_floor(MoveState state) {
         i += state*(-1);
     }
    
-   printf("loop_nr_3 is good \n");
     //4. se etter ordre i state-retning fra
     i = max_lim += state; 
     btn_dir_idx = 0.5 - 0.5 *state;
@@ -117,8 +97,6 @@ int calculate_nxt_floor(MoveState state) {
         }
         i += state;
     }
-
-    printf("loop_nr_4 is good\n");
 
     return current_floor;
 }
