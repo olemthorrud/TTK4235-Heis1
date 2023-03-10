@@ -66,29 +66,50 @@ int calculate_nxt_floor(int current_floor, MoveState motor_dir) {
         }
         break;
 
-    //iterer gjennom alle etasjer
+
+
+    //iterer gjennom alle etasjer og finner mest effektive veg
     case IDLE:
-    for (int i = 0; i < N_FLOORS; i++) {
-        for (int y = 0; i < N_BUTTONS; y++)
-            {
-            if(buttons_pressed[i][y]){
-                next_floor = i;
-                return next_floor;
-            }
-        }        
+    //tester [retning] [state]
+    
+
+    //sjekk ned ned
+    next_floor = calculate_nxt_floor(current_floor, MOVE_DOWN);
+    if(next_floor != current_floor) {
+        return next_floor;
     }
+
+    //sjekk opp opp
+    next_floor = calculate_nxt_floor(current_floor, MOVE_UP);
+        if(next_floor != current_floor) {
+        return next_floor;
+    }
+    
+    //sjekk ned opp
+    for (int i = 0; i < current_floor; i++){
+        if(buttons_pressed[i][0] == 1){
+            return i;
+        }
+    }
+
+
+    //sjekk opp ned
+    for (int i = 3; i > current_floor; i--){
+        if (buttons_pressed[i][1] == 1){
+            return i;
+        }
+    }
+    
     break;
 
     default:
     return next_floor;
 }
+return current_floor;
 }
 
-MoveState calculate_state(int current_floor, int target_floor,MoveState state) {
-    
-}
 
-/* MoveState calculate_move_state(int current_floor, int nxt_floor) {
+MoveState calculate_state(int current_floor, int nxt_floor) {
     int value = current_floor - nxt_floor;
 
     if(value > 0) {
@@ -104,7 +125,27 @@ MoveState calculate_state(int current_floor, int target_floor,MoveState state) {
     }
  
 }
- */
+
+void move_elevator(MoveState state) {
+    switch (state)
+    {
+    case MOVE_DOWN:
+        elevio_motorDirection(DIRN_DOWN);
+        break;
+
+    case MOVE_UP:
+        elevio_motorDirection(DIRN_UP);
+        break;
+    
+    case IDLE:
+        elevio_motorDirection(DIRN_STOP);
+        break;
+        
+    default:
+        break;
+    }
+}
+
 
 void clear_btn(int floor) {
     for (int i = 0; i < N_BUTTONS; i++){
