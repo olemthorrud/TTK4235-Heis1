@@ -2,7 +2,7 @@
 #include "elevio.h"
 
 
-
+int buttons_pressed[N_FLOORS][N_BUTTONS]; 
 
 typedef enum { 
     MOVE_DOWN   = -1,
