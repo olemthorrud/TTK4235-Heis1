@@ -10,6 +10,8 @@
 
 int main(){
 
+    elevio_init();
+
     run();
 
     
