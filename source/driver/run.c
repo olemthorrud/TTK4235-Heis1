@@ -10,6 +10,7 @@ void run()
 {
 
     int current_floor = initialize();
+    //elevio_floorIndicator(current_floor);
     int target_floor;
     int temp;
 while(1) {
@@ -32,11 +33,13 @@ while(1) {
             move_elevator(state);
         
         } while(current_floor != target_floor);
-        
+    
         elevio_motorDirection(DIRN_STOP);
         Set_buttons_pressed();
         clear_btn(current_floor);
-        Keep_doors_open_3_sek();
+        order_light_handler(buttons_pressed); 
+        elevio_floorIndicator(current_floor);
+        Keep_doors_open_3_sek(current_floor);
         //digg
 
     }
