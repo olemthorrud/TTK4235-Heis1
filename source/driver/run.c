@@ -18,8 +18,8 @@ while(1) {
             Set_buttons_pressed();
             current_floor = elevio_floorSensor();
             target_floor = calculate_nxt_floor(current_floor, state);
-            state = calculate_state(current_floor, target_floor, state); //se på edgecase når du kommer ned
-            //move_elevator(current_floor, target_floor);
+            state = calculate_state(current_floor, target_floor); //se på edgecase når du kommer ned
+            move_elevator(state);
         } while(current_floor != target_floor);
         
         clear_btn(current_floor);

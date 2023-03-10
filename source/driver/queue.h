@@ -17,9 +17,9 @@ void Set_buttons_pressed();
 
 int calculate_nxt_floor();
 
-
 void clear_btn(int floor);
 
+MoveState calculate_state(int current_floor, int nxt_floor);
 
-MoveState calculate_state(int current_floor, int target_floor, MoveState state);
+void move_elevator(MoveState state);
 
