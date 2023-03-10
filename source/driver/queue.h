@@ -4,11 +4,14 @@
 
 int buttons_pressed[N_FLOORS][N_BUTTONS]; 
 
+int STOP;
+
 typedef enum { 
     MOVE_DOWN   = -1,
     IDLE        = 0,
     MOVE_UP     = 1
 } MoveState;
+
 
 
 int order_exist();
@@ -24,3 +27,5 @@ MoveState calculate_state(int current_floor, int nxt_floor);
 void move_elevator(MoveState state);
 
 int calculate_nxt_floor(MoveState state);
+
+void print_buttons();

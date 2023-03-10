@@ -7,10 +7,10 @@ void Keep_doors_open_3_sek(){
 
     const int start_time = time(NULL);
 
-    elevio_doorOpenLamp(1); 
+    elevio_doorOpenLamp(1);
 
     while ((time(NULL) - start_time) < 3){
-      if (order_exist()){ //&& !STOP// ){
+      if (!STOP){
         Set_buttons_pressed();
       }  
     }
