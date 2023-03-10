@@ -27,6 +27,7 @@ void Set_buttons_pressed() {
             buttons_pressed[i][y] = 1;
         }
     }
+    
 }
 
 
