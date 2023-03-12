@@ -8,7 +8,6 @@ int buttons_pressed[N_FLOORS][N_BUTTONS] = {
     {0, 0, 0}
     };
 
-int STOP = 0;
 
 int order_exist() {
     for(int i = 0; i<N_FLOORS; i++){
@@ -22,6 +21,7 @@ int order_exist() {
 
 
 void Set_buttons_pressed() {
+    
     for(int i = 0; i<N_FLOORS; i++){
         for(int y = 0; y<N_BUTTONS; y++)
         if (elevio_callButton(i, y)) {
@@ -47,12 +47,14 @@ int check_for_stops(int current_floor, int current_next, MoveState motor_dir) {
     return current_next;
 }
 
-int calculate_nxt_floor(MoveState state) {
-
+int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state, int has_stopped) {
     int current_floor = elevio_floorSensor();
+
+    printf("Ny bestilling: /n ");
 
     if(state == IDLE){
         state = MOVE_UP;
+        
     }
 
     //1. se etter ordre i state-retning med state_plassering fra nermest til lengst unna
@@ -60,13 +62,27 @@ int calculate_nxt_floor(MoveState state) {
     int btn_dir_idx = 0.5 - 0.5 *state;
 
     int i = current_floor;
+
+    if (has_stopped){
+        i = remember_floor;
+        current_floor = remember_floor;
+        //i = calculate_floor_after_stop(); 
+        has_stopped = 0; 
+        printf("heisen har stoppet:  %d \n", i); 
+
+    }
+
+    
     while (i != max_lim) {
         if (buttons_pressed[i][btn_dir_idx] || buttons_pressed[i][BUTTON_CAB]){
             return i;
         }
         i += state;
-    }
+    printf("1CUrrent floor %d", i);
+    printf("looke 1 kjort \n");
 
+    }
+    
     //2. se etter ordre i !state-retning fra langst unna til nermest
     i = max_lim -= state;
     btn_dir_idx = 0.5 + 0.5 *state;
@@ -75,8 +91,11 @@ int calculate_nxt_floor(MoveState state) {
             return i;
         }
         i += state*(-1); 
-    }
+    printf("2CUrrent floor %d", i);
+   printf("looke 2 kjort \n");
 
+    }
+        
     //3. se etter ordre i !state-retning fra nermest til lengst unna
     i = current_floor;
     max_lim = 1.5 - 2.5 * state; 
@@ -85,8 +104,11 @@ int calculate_nxt_floor(MoveState state) {
             return i;
         }
         i += state*(-1);
+        printf("3CUrrent floor %d", i);
+        printf("looke 3 kjort \n");
     }
-   
+      
+
     //4. se etter ordre i state-retning fra
     i = max_lim += state; 
     btn_dir_idx = 0.5 - 0.5 *state;
@@ -97,13 +119,22 @@ int calculate_nxt_floor(MoveState state) {
         }
         i += state;
     }
+    printf("looke 4 kjort \n");
 
     return current_floor;
 }
 
+/* int calculate_floor_after_stop(int prev_floor, MoveState prev_state) {
+    if (prev_state == MOVE_DOWN){
+        return prev_floor
+    }
+} */
 
-
-MoveState calculate_state(int current_floor, int nxt_floor) {
+MoveState calculate_state(int current_floor, int nxt_floor, int prev_floor) {
+    if (elevio_floorSensor() == -1){
+        current_floor = prev_floor;
+    }
+    
     int value = current_floor - nxt_floor;
 
     if(value > 0) {
@@ -156,5 +187,20 @@ void print_buttons(){
             printf("\n");
         }
                     printf("\n");
+}
 
+void clear_orders(){
+     for (int f = 0; f < N_FLOORS; f++){
+        for (int b = 0; b < N_BUTTONS; b++){
+            buttons_pressed[f][b] = 0; 
+        }
+    }
+}
+
+int find_previous_floor(){
+    for (int f = 0; f < N_FLOORS; f++){
+        for (int b = 0; b < N_BUTTONS; b++){
+            
+        }
+    }
 }

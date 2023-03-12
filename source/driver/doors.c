@@ -3,7 +3,7 @@
 #include "queue.h"
 
 
-void Keep_doors_open_3_sek(int current_floor){ 
+void Keep_doors_open_3_sek(int current_floor, int STOP){ 
 
     const int start_time = time(NULL);
      
@@ -13,6 +13,7 @@ void Keep_doors_open_3_sek(int current_floor){
     while ((time(NULL) - start_time) < 3){
       if (!STOP){
         Set_buttons_pressed();
+        order_light_handler(buttons_pressed); 
       }  
     }
     
