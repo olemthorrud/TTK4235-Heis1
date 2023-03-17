@@ -50,7 +50,6 @@ int check_for_stops(int current_floor, int current_next, MoveState motor_dir) {
 int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state, int has_stopped) {
     int current_floor = elevio_floorSensor();
 
-    printf("Ny bestilling: /n ");
 
     if(state == IDLE){
         state = MOVE_UP;
@@ -68,7 +67,6 @@ int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state,
         current_floor = remember_floor;
         //i = calculate_floor_after_stop(); 
         has_stopped = 0; 
-        printf("heisen har stoppet:  %d \n", i); 
 
     }
 
@@ -78,8 +76,7 @@ int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state,
             return i;
         }
         i += state;
-    printf("1CUrrent floor %d", i);
-    printf("looke 1 kjort \n");
+
 
     }
     
@@ -91,8 +88,7 @@ int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state,
             return i;
         }
         i += state*(-1); 
-    printf("2CUrrent floor %d", i);
-   printf("looke 2 kjort \n");
+
 
     }
         
@@ -104,8 +100,7 @@ int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state,
             return i;
         }
         i += state*(-1);
-        printf("3CUrrent floor %d", i);
-        printf("looke 3 kjort \n");
+
     }
       
 
@@ -119,7 +114,7 @@ int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state,
         }
         i += state;
     }
-    printf("looke 4 kjort \n");
+   
 
     return current_floor;
 }
@@ -130,9 +125,15 @@ int calculate_nxt_floor(MoveState state, int remember_floor, int remember_state,
     }
 } */
 
-MoveState calculate_state(int current_floor, int nxt_floor, int prev_floor) {
+MoveState calculate_state(int current_floor, int nxt_floor, int prev_floor, MoveState prev_state) {
     if (elevio_floorSensor() == -1){
+        if(nxt_floor == prev_floor) {
+            current_floor = prev_floor + prev_state;
+
+        }
+        else{
         current_floor = prev_floor;
+        }
     }
     
     int value = current_floor - nxt_floor;

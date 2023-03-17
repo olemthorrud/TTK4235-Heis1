@@ -64,7 +64,7 @@ while(1) {
         order_light_handler(buttons_pressed);
         target_floor = calculate_nxt_floor(state, remember_floor, remember_state, has_stopped);
         printf("target floor %d \n", target_floor);
-        state = calculate_state(current_floor, target_floor, remember_floor); // kan bare være opp eller ned
+        state = calculate_state(current_floor, target_floor, remember_floor, remember_state); // kan bare være opp eller ned
         STOP = elevio_stopButton(); 
          
 
