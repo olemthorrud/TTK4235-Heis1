@@ -6,8 +6,6 @@
 #include "driver/elevio.h"
 #include "driver/run.h"
 
-
-
 int main(){
 
     elevio_init();
